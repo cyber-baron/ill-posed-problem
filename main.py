@@ -80,3 +80,12 @@ print(transpose_ERR)
 matrix_Y = transpose_Y0 + transpose_ERR
 
 print(matrix_Y)
+
+# значения факторов в "фактических" наблюдениях (после исключения строк)
+new_matrix_X = geek.empty([observations_num - 2, parametrs_num + 1])
+
+for i in range(observations_num - 2):
+    for j in range(parametrs_num):
+        new_matrix_X[i][j] = matrix_X[i][j]
+
+print(new_matrix_X)
