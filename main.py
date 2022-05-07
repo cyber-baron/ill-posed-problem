@@ -120,3 +120,59 @@ new_model_coefficient_third = [[sum(a * b for a, b in zip(A_row, B_col))
                                               for A_row in new_model_coefficient_second]                                             
 
 print(new_model_coefficient_third)
+
+#результаты расчета выходной велечины парметра по "фактической" модели
+transpose_new_model_coefficient_third = np.empty([1, parametrs_num + 1])
+
+for i in range(len(new_model_coefficient_third)):
+   for j in range(len(new_model_coefficient_third[0])):
+      transpose_new_model_coefficient_third[j][i] = new_model_coefficient_third[i][j]
+
+new_matrix_Y0 = [[sum(a * b for a, b in zip(A_row, B_col))
+                            for B_col in zip(*matrix_X)]
+                              for A_row in transpose_new_model_coefficient_third]
+
+transpose_new_matrix_Y0 = np.empty([parametrs_num + 1, 1])
+
+for i in range(len(new_matrix_Y0)):
+   for j in range(len(new_matrix_Y0[0])):
+      transpose_new_matrix_Y0[j][i] = new_matrix_Y0[i][j]
+
+print(transpose_new_matrix_Y0)
+
+# дополним "фактическую" модель случайными строчками
+random_strings = np.empty([2, parametrs_num + 1])
+
+for i in range(2):
+        random_strings[i][0] = 1          
+
+for i in range(2):
+    for j in range(parametrs_num):
+        random_strings[i][j + 1] = random.uniform(-xx,xx)   
+
+print(random_strings)
+
+coefficient_random = np.empty([2, 1])
+
+for i in range(2):
+    for j in range(1):
+        coefficient_random[i][j] = random.uniform(-xx,xx)
+
+print(coefficient_random)
+
+# зададим веса всем наблюдениям, при этом для рандомно добавленных вес будет значительно меньше
+weight = np.empty([1, parametrs_num + 1])
+
+for i in range(1):
+    for j in range(parametrs_num + 1):
+        weight[i][j] = 1
+
+for i in range(1):
+    for j in range(parametrs_num - 4):
+        weight[i][j + 5] = 0.0001        
+
+print(weight)                 
+
+diagonal = np.diagflat(weight)
+
+print(diagonal)
