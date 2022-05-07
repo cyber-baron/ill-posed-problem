@@ -176,3 +176,84 @@ print(weight)
 diagonal = np.diagflat(weight)
 
 print(diagonal)
+
+# дополненая матрица значений факторов
+new_new_X = np.empty([observations_num, parametrs_num + 1])
+
+for i in range(observations_num - 2):
+    for j in range(parametrs_num + 1):
+        new_new_X[i][j] = new_matrix_X[i][j]
+
+for i in range(2):
+    for j in range(parametrs_num + 1):
+        new_new_X[i + 5][j] = random_strings[i][j] 
+
+print(new_new_X)
+
+# дополнительная матрица результатов наблюдений
+new_new_Y = np.empty([parametrs_num + 1, 1])
+
+for i in range(observations_num - 2):
+    for j in range(1):
+        new_new_Y[i][j] = new_matrix_Y[i][j]
+
+for i in range(2):
+    for j in range(1):
+        new_new_Y[i + 5][j] = coefficient_random[i][j]
+
+print(new_new_Y) 
+
+# оценки коэффициентов модели по дополнительным данным
+transpose_new_new_X = np.empty([parametrs_num + 1, observations_num])
+
+for i in range(len(new_new_X)):
+   for j in range(len(new_new_X[0])):
+      transpose_new_new_X[j][i] = new_new_X[i][j]
+
+double_diagonal = [[sum(a * b for a, b in zip(A_row, B_col))
+                               for B_col in zip(*diagonal)]
+                                for A_row in diagonal]      
+
+first_step = [[sum(a * b for a, b in zip(A_row, B_col))
+                          for B_col in zip(*double_diagonal)]
+                            for A_row in transpose_new_new_X]     
+
+inverse_first_step = np.linalg.inv(first_step) 
+
+second_step = [[sum(a * b for a, b in zip(A_row, B_col))
+                            for B_col in zip(*transpose_new_new_X)]
+                              for A_row in inverse_first_step]
+
+third_step = [[sum(a * b for a, b in zip(A_row, B_col))
+                            for B_col in zip(*double_diagonal)]
+                              for A_row in second_step]   
+
+fourth_step = [[sum(a * b for a, b in zip(A_row, B_col))
+                            for B_col in zip(*new_new_Y)]
+                              for A_row in third_step]  
+
+print(fourth_step)
+
+# результаты оценки выходного параметра по модели на основе дополнительных данных
+transpose_fourth_step = np.empty([1, parametrs_num + 1])
+
+for i in range(len(fourth_step)):
+   for j in range(len(fourth_step[0])):
+      transpose_fourth_step[j][i] = fourth_step[i][j]
+
+new_calc_Y = [[sum(a * b for a, b in zip(A_row, B_col))
+                          for B_col in zip(*transpose_new_new_X)]
+                            for A_row in transpose_fourth_step]     
+
+print(new_calc_Y)
+
+# сравнение 
+transpose_new_calc_Y = np.empty([parametrs_num + 1, 1])
+
+for i in range(len(new_calc_Y)):
+   for j in range(len(new_calc_Y[0])):
+      transpose_new_calc_Y[j][i] = new_calc_Y[i][j]
+
+compare = matrix_Y - transpose_new_calc_Y
+
+print(compare)
