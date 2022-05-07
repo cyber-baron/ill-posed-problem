@@ -97,3 +97,26 @@ for i in range(observations_num - 2):
         new_matrix_Y[i][j] = matrix_Y[i][j]
 
 print(new_matrix_Y)
+
+# коэффициенты модкли по "фактическим" результатам наблюдений
+transpose_new_matrix_X = np.empty([parametrs_num + 1, observations_num - 2])
+
+for i in range(len(new_matrix_X)):
+   for j in range(len(new_matrix_X[0])):
+      transpose_new_matrix_X[j][i] = new_matrix_X[i][j]
+
+new_model_coefficient_first = [[sum(a * b for a, b in zip(A_row, B_col))
+                                            for B_col in zip(*new_matrix_X)]
+                                              for A_row in transpose_new_matrix_X]  
+
+inverse_new_model_coefficient_first = np.linalg.inv(new_model_coefficient_first)
+
+new_model_coefficient_second = [[sum(a * b for a, b in zip(A_row, B_col))
+                                            for B_col in zip(*new_matrix_X)]
+                                              for A_row in inverse_new_model_coefficient_first] 
+
+new_model_coefficient_third = [[sum(a * b for a, b in zip(A_row, B_col))
+                                            for B_col in zip(*new_matrix_Y)]
+                                              for A_row in new_model_coefficient_second]                                             
+
+print(new_model_coefficient_third)
