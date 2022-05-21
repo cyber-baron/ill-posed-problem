@@ -39,7 +39,7 @@ for i in range(observations_num):
 
 print(matrix_X)
 
-# "истинные" результаты надюдений (идиальная сходимость)
+# "истинные" результаты наблюдений (идеальная сходимость)
 transpose_X = np.empty([parametrs_num + 1, observations_num])
 
 for i in range(len(matrix_X)):
@@ -83,14 +83,14 @@ for i in range(observations_num - 2):
     for j in range(parametrs_num):
         new_matrix_X[i][j] = matrix_X[i][j]
 
-# коэффициенты модели по "факическим" результатам наблюдений
+# коэффициенты модели по "фактическим" результатам наблюдений
 new_matrix_Y = np.empty([observations_num - 2, 1])
 
 for i in range(observations_num - 2):
     for j in range(1):
         new_matrix_Y[i][j] = matrix_Y[i][j]
 
-# коэффициенты модкли по "фактическим" результатам наблюдений
+# коэффициенты модели по "фактическим" результатам наблюдений
 transpose_new_matrix_X = np.empty([parametrs_num + 1, observations_num - 2])
 
 for i in range(len(new_matrix_X)):
@@ -111,7 +111,7 @@ new_model_coefficient_third = [[sum(a * b for a, b in zip(A_row, B_col))
                                             for B_col in zip(*new_matrix_Y)]
                                               for A_row in new_model_coefficient_second]                                             
 
-#результаты расчета выходной велечины парметра по "фактической" модели
+# результаты расчета выходной величины парметра по "фактической" модели
 transpose_new_model_coefficient_third = np.empty([1, parametrs_num + 1])
 
 for i in range(len(new_model_coefficient_third)):
