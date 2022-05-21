@@ -194,9 +194,13 @@ double_diagonal = [[sum(a * b for a, b in zip(A_row, B_col))
                                for B_col in zip(*diagonal)]
                                 for A_row in diagonal]      
 
-first_step = [[sum(a * b for a, b in zip(A_row, B_col))
+pre_first_step = [[sum(a * b for a, b in zip(A_row, B_col))
                           for B_col in zip(*double_diagonal)]
                             for A_row in transpose_new_new_X]     
+
+first_step = [[sum(a * b for a, b in zip(A_row, B_col))
+                          for B_col in zip(*new_new_X)]
+                            for A_row in pre_first_step]  
 
 inverse_first_step = np.linalg.inv(first_step) 
 
