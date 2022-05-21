@@ -1,8 +1,5 @@
 import random
-import sympy as sp
 import numpy as np
-from sympy.abc import z
-import functions as mpf
 
 # диапозон варьирования "истиных" значений коэффициентов модели 
 num = 5.0
