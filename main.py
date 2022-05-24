@@ -1,5 +1,9 @@
 import random
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+from matplotlib import style
 
 # диапозон варьирования "истиных" значений коэффициентов модели 
 num = 5.0
@@ -236,3 +240,10 @@ for i in range(len(new_calc_Y)):
 compare = matrix_Y - transpose_new_calc_Y
 
 print(compare)
+
+style.use('ggplot')  
+
+plt.scatter(matrix_Y, new_calc_Y, color='r')
+plt.plot(matrix_Y, matrix_Y, color='b') 
+plt.scatter(matrix_Y, new_matrix_Y0, color='g')
+plt.show()
